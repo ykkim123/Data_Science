@@ -1,0 +1,63 @@
+#Frequentist
+##likelihood
+N=100 ; a=40 ; b=N-a
+likelihood_theta = function(theta,N,a) theta^(a)*(1-theta)^(N-a)
+x <- seq(0, 1, by=0.01)
+plot(x, likelihood_theta(x,N,a), type='l', xlab='theta', ylab='likelihood', main='likelihood', xlim=c(0,1))
+abline(v=0.4, col='red')
+
+#Bayesian
+par(mfrow=c(3,1))
+alpha=4; beta=2
+#prior distribution
+plot(density(rbeta(n=100000, alpha, beta)), main='prior distribution', xlab='possibility', ylab='credibility')
+N=100 ; a=40 ; b=N-a
+#likelihood
+likelihood_theta = function(theta,N,a) theta^(a)*(1-theta)^(N-a)
+x = seq(0, 1, by=0.01)
+plot(x, likelihood_theta(x,N,a), type='l', xlab='theta', ylab='likelihood', main='likelihood', xlim=c(0,1))
+#posterior distribution
+plot(density(rbeta(n=100000, a+alpha, b+beta)), main='posterior distribution', xlab='possibility', ylab='credibility', xlim=c(0,1))
+abline(v=0.4, col='red')
+
+#N=1000
+par(mfrow=c(3,1))
+alpha=4; beta=2
+#prior distribution
+plot(density(rbeta(n=100000, alpha, beta)), main='prior distribution', xlab='possibility', ylab='credibility')
+N=1000 ; a=400 ; b=N-a
+#likelihood
+likelihood_theta = function(theta,N,a) theta^(a)*(1-theta)^(N-a)
+x = seq(0, 1, by=0.01)
+plot(x, likelihood_theta(x,N,a), type='l', xlab='theta', ylab='likelihood', main='likelihood', xlim=c(0,1))
+#posterior distribution
+plot(density(rbeta(n=100000, a+alpha, b+beta)), main='posterior distribution', xlab='possibility', ylab='credibility', xlim=c(0,1))
+abline(v=0.4, col='red')
+
+#N=10
+par(mfrow=c(3,1))
+alpha=4; beta=2
+#prior distribution
+plot(density(rbeta(n=100000, alpha, beta)), main='prior distribution', xlab='possibility', ylab='credibility')
+N=10 ; a=4 ; b=N-a
+#likelihood
+likelihood_theta = function(theta,N,a) theta^(a)*(1-theta)^(N-a)
+x = seq(0, 1, by=0.01)
+plot(x, likelihood_theta(x,N,a), type='l', xlab='theta', ylab='likelihood', main='likelihood', xlim=c(0,1))
+#posterior distribution
+plot(density(rbeta(n=100000, a+alpha, b+beta)), main='posterior distribution', xlab='possibility', ylab='credibility', xlim=c(0,1))
+abline(v=0.4, col='red')
+
+#Uninformative prior
+par(mfrow=c(3,1))
+alpha=1 ; beta=1
+#prior distribution
+plot(density(rbeta(n=100000, alpha, beta)), main='prior distribution', xlab='possibility', ylab='credibility')
+N=100 ; a=40 ; b=N-a
+#likelihood
+likelihood_theta = function(theta,N,a) theta^(a)*(1-theta)^(N-a)
+x = seq(0, 1, by=0.01)
+plot(x, likelihood_theta(x,N,a), type='l', xlab='theta', ylab='likelihood', main='likelihood', xlim=c(0,1))
+#posterior distribution
+plot(density(rbeta(n=100000, a+alpha, b+beta)), main='posterior distribution', xlab='possibility', ylab='credibility', xlim=c(0,1))
+abline(v=0.4, col='red')
