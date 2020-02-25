@@ -1,0 +1,50 @@
+##### Bayesian Linear Regression #####
+
+library(fastDummies)
+library(mvtnorm)
+
+#Load data
+data(CO2)
+head(CO2)
+
+#Exclude Plant column
+X_dummy = dummy_cols(CO2, select_columns=c('Type','Treatment'), remove_first_dummy=T)
+X_dummy = X_dummy[,6:dim(X_dummy)[2]]
+X_conti = CO2$conc
+Y = CO2$uptake
+X = as.matrix(cbind(X_dummy,X_conti))
+
+#MLE for standard deviation
+lm = lm(Y~X)
+summary(lm)
+sigma=6.19
+
+
+#Constant prior
+##MAP(maximum a posterior) 
+c_X = cbind(rep(1,length(Y)),X)
+mu = solve(t(c_X)%*%c_X)%*%t(c_X)%*%Y
+  
+##Posterior predictive distribution
+train_X = c_X[1:82,]
+train_Y = Y[1:82]
+train_mu = solve(t(train_X)%*%train_X)%*%t(train_X)%*%train_Y
+train_cov_mat = sigma^(2)*solve(t(train_X)%*%train_X)
+
+##Monte Carlo estimation
+set.seed(1)
+beta_i = rmvnorm(n=10000, mean=train_mu, sigma=train_cov_mat)
+test_X = c_X[83:84,]
+test_Y = Y[83:84]
+par(mfrow=c(1,2))
+hist(test_X[1,]%*%t(beta_i), main='83th tree', xlab='predicted', xlim=c(18,28))
+abline(v=test_Y[1], col='blue')
+hist(test_X[2,]%*%t(beta_i), main='84th tree', xlab='predicted', xlim=c(19,35))
+abline(v=test_Y[2], col='blue')
+
+
+#Normal prior
+## Posterior beta 
+lambda = 100000 # 10, 100000
+mu = solve(t(c_X)%*%c_X+sigma^(2)/lambda*diag(ncol(t(c_X)%*%c_X)))%*%t(c_X)%*%Y
+mu
