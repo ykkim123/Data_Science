@@ -1,3 +1,3 @@
 # This is code repository
 
-[Github Pages](https://ykkim123.github.io)
+To visit Github Pages, click [here](https://ykkim123.github.io)
